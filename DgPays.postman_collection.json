@@ -1,0 +1,686 @@
+{
+	"info": {
+		"_postman_id": "3933670e-9c20-4a15-b22f-911b1bad17a3",
+		"name": "DgPays",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27921696"
+	},
+	"item": [
+		{
+			"name": "Task1",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"code\", \"{{$randomLoremSentence}}\");",
+							"pm.environment.set(\"name\", \"{{$randomFullName}}\");",
+							"pm.environment.set(\"productGroupId\", \"{{$guid}}\");",
+							"pm.environment.set(\"BankAccount\", \"{{$randomBankAccount}}\");",
+							"pm.environment.set(\"FinanceSource\", \"{{$randomInt}}\");",
+							"pm.environment.set(\"BirthDate\", \"{{$randomDateRecent}}\");",
+							"pm.environment.set(\"financeType\", \"{{$random.number(100,99999)}}\");",
+							"pm.environment.set(\"dateDifference\",\"{{$randomInt}}\");",
+							"pm.environment.set(\"isActive\", \"{{$randomBoolean}}\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response time is less than 500ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);",
+							"});",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Response Key Exist\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property(\"id\");",
+							"});",
+							"pm.test(\"Response Key Type\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.id).to.be.a('string');",
+							"});",
+							"pm.globals.set(\"id\", pm.response.json().id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "key",
+							"value": "x-api-key",
+							"type": "string"
+						},
+						{
+							"key": "value",
+							"value": "PMAK-6481db845a70ad244e30225e-c6aeefb5ca122cd595bf39fbc9297cf898",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"code\": \"{{$code}}\",\r\n  \"name\": \"{{$name}}\",\r\n  \"productGroupId\": \"{{$productGroupId}}\",\r\n  \"BankAccount\": \"{{$BankAccount}}\",\r\n  \"FinanceSource\":\"{{$FinanceSource}}\",\r\n  \"BirthDate\": \"{{$BirthDate}}\",\r\n  \"financeType\": \"{{$financeType}}\",\r\n  \"dateDifference\": \"{{$dateDifference}}\",\r\n  \"isActive\": \"{{$isActive}}\"\r\n}\r\n\r\n\r\n\r\n"
+				},
+				"url": {
+					"raw": "https://b42b12e0-722b-4139-bd4b-285429e4e675.mock.pstmn.io/dgpays",
+					"protocol": "https",
+					"host": [
+						"b42b12e0-722b-4139-bd4b-285429e4e675",
+						"mock",
+						"pstmn",
+						"io"
+					],
+					"path": [
+						"dgpays"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Task2",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"code\", \"{{$randomLoremSentence}}\");",
+							"pm.environment.set(\"name\", undefined);",
+							"pm.environment.set(\"productGroupId\", \"{{$guid}}\");",
+							"pm.environment.set(\"BankAccount\", \"{{$randomBankAccount}}\");",
+							"pm.environment.set(\"FinanceSource\", \"{{$randomInt}}\");",
+							"pm.environment.set(\"BirthDate\", \"{{$randomDateRecent}}\");",
+							"pm.environment.set(\"financeType\", \"{{$random.number(100,99999)}}\");",
+							"pm.environment.set(\"dateDifference\",\"{{$randomInt}}\");",
+							"pm.environment.set(\"isActive\", \"{{$randomBoolean}}\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"pm.test(\"Error name key validation\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.error.name).to.eql(\"badRequest\");",
+							"});",
+							"pm.test(\"Error message key validation\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.error.message).to.eql(\"Request body has invalid format.\");",
+							"});",
+							"pm.test(\"Response has a body\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.body;",
+							"});",
+							"pm.test(\"POST Error Code\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    var errorCode = jsonData.error.name;",
+							"    pm.environment.set(\"postErrorCode\", errorCode);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "key",
+							"value": "x-api-key",
+							"type": "string"
+						},
+						{
+							"key": "value",
+							"value": "PMAK-6481db845a70ad244e30225e-c6aeefb5ca122cd595bf39fbc9297cf898",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"code\": \"{{$code}}\",\r\n  \"name\": {{$name}},\r\n  \"productGroupId\": \"{{$productGroupId}}\",\r\n  \"BankAccount\": \"{{$BankAccount}}\",\r\n  \"FinanceSource\":\"{{$FinanceSource}}\",\r\n  \"BirthDate\": \"{{$BirthDate}}\",\r\n  \"financeType\": \"{{$financeType}}\",\r\n  \"dateDifference\": \"{{$dateDifference}}\",\r\n  \"isActive\": \"{{$isActive}}\"\r\n}\r\n\r\n\r\n\r\n"
+				},
+				"url": {
+					"raw": "https://b42b12e0-722b-4139-bd4b-285429e4e675.mock.pstmn.io/dgpays",
+					"protocol": "https",
+					"host": [
+						"b42b12e0-722b-4139-bd4b-285429e4e675",
+						"mock",
+						"pstmn",
+						"io"
+					],
+					"path": [
+						"dgpays"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Task3",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Response Keys Exist\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.args.TestData[0]).to.have.property(\"id\");",
+							"    pm.expect(jsonData.args.TestData[0]).to.have.property(\"code\");",
+							"    pm.expect(jsonData.args.TestData[0]).to.have.property(\"name\");",
+							"    pm.expect(jsonData.args.TestData[0]).to.have.property(\"description\");",
+							"    pm.expect(jsonData.args.TestData[0]).to.have.property(\"productGroupId\");",
+							"    pm.expect(jsonData.args.TestData[0]).to.have.property(\"fundingSource\");",
+							"    pm.expect(jsonData.args.TestData[0]).to.have.property(\"proposalValidityDay\");",
+							"    pm.expect(jsonData.args.TestData[0]).to.have.property(\"profitCalculationMethod\");",
+							"    pm.expect(jsonData.args.TestData[0]).to.have.property(\"financeType\");",
+							"    pm.expect(jsonData.args.TestData[0]).to.have.property(\"dateDifference\");",
+							"    pm.expect(jsonData.args.TestData[0]).to.have.property(\"isActive\");",
+							"    pm.expect(jsonData.args.TestData[0]).to.have.property(\"accountProductId\");",
+							"});",
+							"pm.test(\"Response Key Types\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.args.TestData[0].id).to.be.a('string');",
+							"    pm.expect(jsonData.args.TestData[0].code).to.be.a('string');",
+							"    pm.expect(jsonData.args.TestData[0].name).to.be.a('string');",
+							"    pm.expect(jsonData.args.TestData[0].description).to.be.a('string');",
+							"    pm.expect(jsonData.args.TestData[0].productGroupId).to.be.a('string');",
+							"    pm.expect(jsonData.args.TestData[0].fundingSource).to.be.a('number');",
+							"    pm.expect(jsonData.args.TestData[0].proposalValidityDay).to.be.a('number');",
+							"    pm.expect(jsonData.args.TestData[0].profitCalculationMethod).to.be.a('number');",
+							"    pm.expect(jsonData.args.TestData[0].financeType).to.be.a('number');",
+							"    pm.expect(jsonData.args.TestData[0].dateDifference).to.be.a('number');",
+							"    pm.expect(jsonData.args.TestData[0].isActive).to.be.a('boolean');",
+							"    pm.expect(jsonData.args.TestData[0].accountProductId).to.be.a('string');",
+							"",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "key",
+							"value": "x-api-key",
+							"type": "string"
+						},
+						{
+							"key": "value",
+							"value": "PMAK-6481db845a70ad244e30225e-c6aeefb5ca122cd595bf39fbc9297cf898",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "https://b42b12e0-722b-4139-bd4b-285429e4e675.mock.pstmn.io/dgpays",
+					"protocol": "https",
+					"host": [
+						"b42b12e0-722b-4139-bd4b-285429e4e675",
+						"mock",
+						"pstmn",
+						"io"
+					],
+					"path": [
+						"dgpays"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Task4",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Response Body is NOT an Empty List\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.args.TestData).to.be.an('array').that.is.not.empty;",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "key",
+							"value": "x-api-key",
+							"type": "string"
+						},
+						{
+							"key": "value",
+							"value": "PMAK-6481db845a70ad244e30225e-c6aeefb5ca122cd595bf39fbc9297cf898",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "https://b42b12e0-722b-4139-bd4b-285429e4e675.mock.pstmn.io/dgpays",
+					"protocol": "https",
+					"host": [
+						"b42b12e0-722b-4139-bd4b-285429e4e675",
+						"mock",
+						"pstmn",
+						"io"
+					],
+					"path": [
+						"dgpays"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Task5",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"code\", \"{{$randomLoremSentence}}\");",
+							"pm.environment.set(\"name\", \"{{$randomFullName}}\");",
+							"pm.environment.set(\"productGroupId\", \"{{$guid}}\");",
+							"pm.environment.set(\"BankAccount\", \"{{$randomBankAccount}}\");",
+							"pm.environment.set(\"FinanceSource\", \"{{$randomInt}}\");",
+							"pm.environment.set(\"BirthDate\", \"{{$randomDateRecent}}\");",
+							"pm.environment.set(\"financeType\", \"{{$random.number(100,99999)}}\");",
+							"pm.environment.set(\"dateDifference\",\"{{$randomInt}}\");",
+							"pm.environment.set(\"isActive\", \"{{$randomBoolean}}\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Response Body Text Message Validation\", function () {",
+							"    pm.response.to.have.body(\"Basarili\");",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "key",
+							"value": "x-api-key",
+							"type": "string"
+						},
+						{
+							"key": "value",
+							"value": "PMAK-6481db845a70ad244e30225e-c6aeefb5ca122cd595bf39fbc9297cf898",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"code\": \"{{$code}}\",\n  \"name\": \"{{$name}}\",\n  \"productGroupId\": \"{{$productGroupId}}\",\n  \"BankAccount\": \"{{$BankAccount}}\",\n  \"FinanceSource\":\"{{$FinanceSource}}\",\n  \"BirthDate\": \"{{$BirthDate}}\",\n  \"financeType\": \"{{$financeType}}\",\n  \"dateDifference\": \"{{$dateDifference}}\",\n  \"isActive\": \"{{$isActive}}\"\n}\n\n\n\n"
+				},
+				"url": {
+					"raw": "https://b42b12e0-722b-4139-bd4b-285429e4e675.mock.pstmn.io/dgpays/:id",
+					"protocol": "https",
+					"host": [
+						"b42b12e0-722b-4139-bd4b-285429e4e675",
+						"mock",
+						"pstmn",
+						"io"
+					],
+					"path": [
+						"dgpays",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Task6",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"pm.test(\"Response Keys Exist\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.error).to.have.property(\"name\");",
+							"    pm.expect(jsonData.error).to.have.property(\"message\");",
+							"});",
+							"pm.test(\"Error Message is Not Empty\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.error.message).is.not.empty;",
+							"});",
+							"pm.test(\"PUT Error Code\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    var errorCode = jsonData.error.name;",
+							"    pm.environment.set(\"putErrorCode\", errorCode);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "key",
+							"value": "x-api-key",
+							"type": "string"
+						},
+						{
+							"key": "value",
+							"value": "PMAK-6481db845a70ad244e30225e-c6aeefb5ca122cd595bf39fbc9297cf898",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "null"
+				},
+				"url": {
+					"raw": "https://b42b12e0-722b-4139-bd4b-285429e4e675.mock.pstmn.io/dgpays/:id",
+					"protocol": "https",
+					"host": [
+						"b42b12e0-722b-4139-bd4b-285429e4e675",
+						"mock",
+						"pstmn",
+						"io"
+					],
+					"path": [
+						"dgpays",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{$guid}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Task7",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Response Body Text Message Validation\", function () {",
+							"    pm.response.to.have.body(\"Basarili\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "key",
+							"value": "x-api-key",
+							"type": "string"
+						},
+						{
+							"key": "value",
+							"value": "PMAK-6481db845a70ad244e30225e-c6aeefb5ca122cd595bf39fbc9297cf898",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "https://b42b12e0-722b-4139-bd4b-285429e4e675.mock.pstmn.io/dgpays/:id",
+					"protocol": "https",
+					"host": [
+						"b42b12e0-722b-4139-bd4b-285429e4e675",
+						"mock",
+						"pstmn",
+						"io"
+					],
+					"path": [
+						"dgpays",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Task8",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"pm.test(\"Response Keys Exist\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.error).to.have.property(\"code\");",
+							"    pm.expect(jsonData.error).to.have.property(\"message\");",
+							"});",
+							"pm.test(\"Error Message is Not Empty\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.error.message).is.not.empty;",
+							"});",
+							"pm.test(\"DELETE Error Code\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    var errorCode = jsonData.error.code;",
+							"    pm.environment.set(\"deleteErrorCode\", errorCode);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "key",
+							"value": "x-api-key",
+							"type": "string"
+						},
+						{
+							"key": "value",
+							"value": "PMAK-6481db845a70ad244e30225e-c6aeefb5ca122cd595bf39fbc9297cf898",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "https://b42b12e0-722b-4139-bd4b-285429e4e675.mock.pstmn.io/dgpays/:id/error",
+					"protocol": "https",
+					"host": [
+						"b42b12e0-722b-4139-bd4b-285429e4e675",
+						"mock",
+						"pstmn",
+						"io"
+					],
+					"path": [
+						"dgpays",
+						":id",
+						"error"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{$guid}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
